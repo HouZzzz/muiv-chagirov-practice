@@ -82,3 +82,143 @@ console.log(xs == changed) // false, разные ссылки
 const elements = ["10", 5, "abc", null, "7"]
 const sum = elements.reduce((acc, curr) => acc + (Number(curr) || 0), 0);
 console.log(sum) // 22
+
+
+// 11
+let isEmptyValue = (v) => {
+    const type = typeof v
+    if (type === 'undefined') { // is undefined
+        return true
+    } else if (type === 'object' && !v) { // is null
+        return true
+    } else if (type === 'string' && v === '') { // is empty string
+        return true
+    } else if (Array.isArray(v) && v.length === 0) { // is empty array
+        return true
+    } else if (type === 'object' && Object.keys(v).length === 0) { // is empty object (проверяем колво ключей в объекте. если 0, то он пустой)
+        return true
+    } else {
+        return false
+    }
+}
+// тесты душно писать, но я проверил, оно работает как надо
+
+// 12
+const keepOnlyPrimitives = (arr) => {
+    const primitiveTypes = ['number', 'string', 'boolean', 'undefined', 'bigint', 'symbol']
+    return arr.filter(e => primitiveTypes.includes(typeof e))
+}
+const differentTypesList = [1,"abc",true,undefined,1n, {}, [], null]
+consolelog(keepOnlyPrimitives(differentTypesList)) // [1,"abc",true,undefined,1n]
+
+// 13
+const obj1 = {x:1}
+const obj2 = {x:1}
+const obj3 = obj1
+
+console.log(obj1===obj2) // false тк разные объекты (не проверяется содержание объектов)
+console.log(obj1===obj3) //  true тк присвоена ссылка от obj1
+
+// 14
+const keysOf = (obj) => {
+    return Object.keys(obj)
+}
+
+// 15
+let summaryTypes = (arr) => {
+    const count = {
+        'number': 0,
+        'string': 0,
+        'boolean': 0,
+        'null': 0,
+        'undefined': 0,
+        'array': 0,
+        'object': 0,
+        'function': 0,
+        'symbol': 0,
+        'bigint': 0,
+    }
+
+    // exactType делал в пятом задании
+    arr.forEach(e => count[exactType(e)]+=1)
+    return count
+}
+
+
+// 16
+let updateAt = (arr, idx, value) => {
+    const copy = [...arr]
+    copy[idx] = value
+    return copy
+}
+
+let originalArr = [1,2,3,4,5]
+let updated = updateAt(arr, 0, 100) // [100,2,3,4,5]
+console.log(originalArr == updated) // false, разные ссылки
+
+// 17
+const removeAt = (arr, idx) => {
+    const firstHalf = arr.slice(0, idx)
+    const secondHalf = arr.slice(idx + 1, arr.length)
+    return firstHalf.concat(secondHalf)
+}
+
+originalArr = [1,2,3,4,5]
+updated = removeAt(originalArr, 0) // [2,3,4,5]
+
+// 18
+const omit = (obj, key) => {
+    const copy = {...obj}
+    delete copy[key]
+    return copy
+}
+
+const editedState = omit(state, 'ok') // объект без ключа ok
+
+console.log(state == editedState) // false, ссылки разные
+
+
+// 19
+// дубликат задания 11
+
+// 20
+let isEqualArrays = (a,b) => {
+    if (a.length !== b.length) return false
+    for (let i = 0; i < a.length; i++) {
+        if (a[i] !== b[i]) {
+            return false
+        }
+    }
+
+    return true
+}
+
+let equalsShallow = (a,b) => {
+    // проверка по ключам
+    const aKeys = Object.keys(a).sort()
+    const bKeys = Object.keys(b).sort()
+    console.log(aKeys, bKeys)
+    if (!isEqualArrays(aKeys, bKeys)) {
+        console.log('массивы ключей не одинаковы')
+        return false
+    }
+
+    const primitiveTypes = ['number', 'string', 'boolean', 'undefined', 'bigint', 'symbol']
+    aKeys.forEach(key => {
+        if (primitiveTypes.includes(typeof key)) {
+            // если примитивный, то сравниваем значение
+            if (a[key] !== b[key]) {
+                console.log(`${a[key]} и ${b[key]} не одинаковы`)
+                return false;
+            }
+        } else {
+            // если не примитивный, то сравниваем по ссылкам
+            if (a[key] != b[key]) {
+                console.log(`${a[key]} и ${b[key]} не одинаковы`)
+                return false;
+            }
+        }
+    })
+    
+    return true;
+}
