@@ -20,12 +20,12 @@ console.log(minNumber(12,7)) // 7
 console.log(minNumber(12,70)) // 12
 
 // 3
-let divisible = (n) => n % 15 == 0 ? "yes" : "no"
+let divisible = (n) => n % 3 == 0 ? "yes" : "no"
 
-console.log(15) // yes
-console.log(45) // yes
-console.log(1) // no
-console.log(12) // no
+console.log(divisible(15)) // yes
+console.log(divisible(45)) // yes
+console.log(divisible(1)) // no
+console.log(divisible(13)) // no
 
 // 4
 let sumFromOneToN = (n) => {
